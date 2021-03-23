@@ -26,4 +26,25 @@
 		INSERT INTO BOARD2
 		VALUES ( #{seq},#{title}, #{writer}, #{content}, #{filename} )
 	</insert>
+
+
+	
+<!-- 게시글의 댓글 목록 -->
+		<select id="getReplyList" resultType="ReplyVO">	 
+		<!-- mybatis-config에 패키지 경로가 있기떄문에  com.company.board.service.replyVO대신에 클래스명만 적어도됨-->
+		SELECT * 
+			FROM reply
+			WHERE board_seq=#{board_seq}
+	</select>
+
+<!-- 댓글등록 -->
+	<insert id="insertReply" parameterType="ReplyVO">
+		INSERT INTO reply(seq,content,board_seq)
+		VALUES (
+		( SELECT NVL(MAX(SEQ),0)+1 FROM REPLY),	
+		#{content}, 
+		#{board_seq}
+		)
+	</insert>
+
 </mapper>
